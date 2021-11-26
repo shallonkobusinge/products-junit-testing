@@ -1,5 +1,6 @@
 package com.example.product_junit_testing.model;
 
+import com.example.product_junit_testing.dto.ProductDto;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
@@ -30,6 +31,12 @@ public class Product {
     }
 
     public Product() {
+    }
+
+    public Product(ProductDto productDto) {
+        this.name = productDto.getName();
+        this.quantity = productDto.getQuantity();
+        this.price = productDto.getPrice();
     }
 
     public Long getId() {
