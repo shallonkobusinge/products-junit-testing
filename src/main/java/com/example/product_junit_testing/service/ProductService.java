@@ -20,6 +20,7 @@ public class ProductService {
     private ProductRepository productRepository;
 
     public List<Product> getAll(){
+
         return productRepository.findAll();
     }
 
@@ -31,9 +32,10 @@ public class ProductService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIResponse(false,"Product not found"));
     }
     public ResponseEntity<?> create(ProductDto productDto){
+        System.out.println(productDto.getName()+" " + productDto.getPrice()+" "+ productDto.getQuantity());
      Product product = new Product(productDto);
-      productRepository.save(product);
-      return ResponseEntity.ok(new APIResponse(true, "Product created successfully", product));
+      Product savedProduct = productRepository.save(product);
+      return ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse(true, "Product created successfully", savedProduct));
     }
     public ResponseEntity<?> update(Long id,ProductDto productDto ){
         Optional<Product> productFoundById = productRepository.findById(id);

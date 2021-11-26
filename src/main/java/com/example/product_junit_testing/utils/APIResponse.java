@@ -33,4 +33,12 @@ public class APIResponse {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public Product getData() {
+        return data;
+    }
+
+    public void setData(Product data) {
+        this.data = data;
+    }
 }
