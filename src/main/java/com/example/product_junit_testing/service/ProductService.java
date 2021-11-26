@@ -13,20 +13,21 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public List<Product> getAllProducts(){
+    public List<Product> getAll(){
         return productRepository.findAll();
     }
 
-    public Product getById(Long id){
+    public ResponseEntity<?> getById(Long id){
         Optional<Product> product = productRepository.findById(id);
         if(product.isPresent()){
-            return product.get();
+            return ResponseEntity.ok(product.get());
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
     }
 
     public Product create(ProductDto productDto){
