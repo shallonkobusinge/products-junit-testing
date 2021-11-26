@@ -27,11 +27,12 @@ public class ProductController {
         return productService.getById(id);
     }
     @PostMapping()
-    public Product create(@Valid ProductDto productDto){
+    public ResponseEntity<?> create(@Valid ProductDto productDto){
         return productService.create(productDto);
     }
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable(name = "id") Long id, @Valid ProductDto productDto){
+
         return productService.update(id, productDto);
     }
 
