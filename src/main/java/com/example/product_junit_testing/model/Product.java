@@ -39,6 +39,13 @@ public class Product {
         this.price = productDto.getPrice();
     }
 
+    public Product(Long id, ProductDto productDto) {
+        this.id = id;
+        this.name = productDto.getName();
+        this.quantity = productDto.getQuantity();
+        this.price = productDto.getPrice();
+    }
+
     public Long getId() {
         return id;
     }

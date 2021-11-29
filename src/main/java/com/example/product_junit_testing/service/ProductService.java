@@ -24,20 +24,33 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public ResponseEntity<?> getById(Long id){
+    public ResponseEntity<APIResponse> getById(Long id){
         Optional<Product> product = productRepository.findById(id);
         if(product.isPresent()){
             return ResponseEntity.ok(new APIResponse(true,"",product.get()));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIResponse(false,"Product not found"));
     }
-    public ResponseEntity<?> create(ProductDto productDto){
-        System.out.println(productDto.getName()+" " + productDto.getPrice()+" "+ productDto.getQuantity());
+    public Product save(ProductDto prod) {
+
+        Product product = new Product();
+        product.setName(prod.getName());
+        product.setPrice(prod.getPrice());
+        product.setQuantity(prod.getQuantity());
+
+        return productRepository.save(product);
+    }
+    public ResponseEntity<APIResponse> create(ProductDto productDto){
+
      Product product = new Product(productDto);
-      Product savedProduct = productRepository.save(product);
+      if(productRepository.existsByName(product.getName())){
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new APIResponse(false,"Product name already exists"));
+      }
+        Product savedProduct = productRepository.save(product);
       return ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse(true, "Product created successfully", savedProduct));
     }
-    public ResponseEntity<?> update(Long id,ProductDto productDto ){
+
+    public ResponseEntity<APIResponse> update(Long id,ProductDto productDto ){
         Optional<Product> productFoundById = productRepository.findById(id);
         if(productFoundById.isPresent()){
             Product product = productFoundById.get();
@@ -53,7 +66,7 @@ public class ProductService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIResponse(false,"Product Not found"));
     }
 
-    public ResponseEntity<?> delete(Long id){
+    public ResponseEntity<APIResponse> delete(Long id){
         Optional<Product> productFoundById  = productRepository.findById(id);
         if(productFoundById.isPresent()){
 
