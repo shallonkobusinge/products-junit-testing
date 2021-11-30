@@ -64,6 +64,7 @@ public class ProductTestRepository {
         assertEquals(savedProduct.getQuantity(), product.getQuantity());
 
     }
+
     @Test(expected = NoSuchElementException.class)
     public void update__failure(){
         Optional<Product> foundProductById = productRepository.findById(10L);
@@ -85,7 +86,6 @@ public class ProductTestRepository {
     List<Product> newProducts = productRepository.findAll();
     assertFalse(products.size() == newProducts.size());
     }
-
 
     @Test(expected = EmptyResultDataAccessException.class)
     public void delete__failure(){

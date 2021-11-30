@@ -88,6 +88,7 @@ public class ProductServiceTest {
         assertEquals(updatedProduct.getBody().isStatus() , true);
 
     }
+
     @Test(expected = NullPointerException.class)
     public void update__failure(){
         ProductDto productDto = new ProductDto("Earphones",10000.0,10);
