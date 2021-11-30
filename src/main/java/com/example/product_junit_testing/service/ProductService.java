@@ -37,7 +37,6 @@ public class ProductService {
         product.setName(prod.getName());
         product.setPrice(prod.getPrice());
         product.setQuantity(prod.getQuantity());
-
         return productRepository.save(product);
     }
     public ResponseEntity<APIResponse> create(ProductDto productDto){

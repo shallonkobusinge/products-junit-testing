@@ -4,6 +4,7 @@ import com.example.product_junit_testing.dto.ProductDto;
 import com.example.product_junit_testing.model.Product;
 import com.example.product_junit_testing.service.ProductService;
 import com.example.product_junit_testing.utils.APIResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -87,67 +89,88 @@ public class ProductControllerTest {
 
     }
 
-//    @Test
-//    public void registerProduct_Success() throws Exception {
-//        Product product = new Product(1L,"Orange", 300.0, 20);
-//        ProductDto productDto = new ProductDto("Orange",300.0, 20);
-//        when(productServiceMock.save(productDto)).thenReturn(product);
-//        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-//                .post("/save-product")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content("{\"id\":1L, \"name\":\"Orange\", \"price\":300.0,\"quantity\":20}");
-//
-//        MvcResult result = mockMvc
-//                .perform(request)
-//                .andExpect(status().isCreated())
-//                .andExpect(content().json("{\"id\":1L, \"name\":\"Orange\", \"price\":300.0,\"quantity\":20}"))
-//                .andReturn();
-//    }
+    @Test
+    public void saveProductResponsityOnController__success() throws Exception {
+        Product product = new Product(1L,"Orange", 300.0, 20);
+        ProductDto productDto = new ProductDto("Orange",300.0, 20);
+        when(productServiceMock.save(any(ProductDto.class))).thenReturn(product);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post("/products/save-product")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content("{\"id\":1, \"name\":\"Orange\", \"price\":300.0,\"quantity\":20}");
+        MvcResult result = mockMvc
+                .perform(request)
+                .andExpect(status().isCreated())
+                .andExpect(content().json("{\"id\":1, \"name\":\"Orange\", \"price\":300.0,\"quantity\":20}"))
+                .andReturn();
+    }
+
+    @Test
+    public void create__success() throws Exception{
+        Product product = new Product(1L,"Clothes",1000.0,10);
+        ProductDto productDto = new ProductDto("Clothes",1000.0,10);
+        when(productServiceMock.create(any(ProductDto.class))).thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse(true,"Product created Successfully",product)));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post("/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\":1, \"name\":\"Clothes\",\"price\":1000.0,\"quantity\":10}");
+
+        MvcResult result = mockMvc
+                .perform(request)
+                .andExpect(status().isCreated())
+                .andExpect(content().json("{\"status\":true,\"message\":\"Product created Successfully\",\"data\":{\"id\":1,\"name\":\"Clothes\",\"price\":1000.0,\"quantity\":10}}"))
+                .andReturn();
+
+    }
 
     @Test
     public void updateProduct_success() throws Exception{
         Product product = new Product(1L,"Clothes",1000.0,10);
         ProductDto productDto = new ProductDto("Shoes",3000.0,30);
         Product updatedProduct = new Product(1L, "Shoes", 3000.0,30);
+        when(productServiceMock.getById(product.getId())).thenReturn(ResponseEntity.ok(new APIResponse(true, "", product)));
         when(productServiceMock.update(product.getId(), productDto)).thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse(true,"Product updated successfully",updatedProduct)));
-        System.out.println(ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse(true,"Product updated successfully",updatedProduct)));
-        //
+
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .put("/products/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType("{\"name\":\"Shoes\", \"price\":3000.0,\"quantity\":30}");
+                .content("{\"id\":1,\"name\":\"Shoes\",\"price\":300.0,\"quantity\":30}");
         MvcResult result = mockMvc
                 .perform(request)
-//                .andExpect(status().isCreated())
-//                .andExpect(content().json("{\"name\":\"Shoes\", \"price\":3000.0,\"quantity\":30}"))
+                .andExpect(status().isOk())
+//                .andExpect(content().json("{\"status\":true,\"message\":\"Product updated successfully\",\"data\":{\"id\":1,\"name\":\"Shoes\",\"price\":300.0,\"quantity\":30}}"))
                 .andReturn();
         System.out.println(result.getResponse().getStatus());
 
     }
 
+    @Test
+    public void deleteProduct__success() throws Exception{
+        Product product = new Product(1L,"Clothes",1000.0,10);
+        when(productServiceMock.delete(product.getId())).thenReturn(ResponseEntity.status(HttpStatus.OK).body(new APIResponse(true,"Product Deleted Successfully")));
 
-//    @Test
-//    public void create__success() throws Exception{
-//        Product product = new Product(1L,"Clothes",1000.0,10);
-//        ProductDto productDto = new ProductDto("Clothes",1000.0,10);
-////        when(productServiceMock.create(productDto)).thenReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new APIResponse(true,"Product created Successfully",product)));
-//        when(productServiceMock.save(productDto)).thenReturn(product);
-////        System.out.println(productServiceMock.save(productDto));
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .delete("/products/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc
+                .perform(request)
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+
+
 //
-//        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-//                .post("/products/all")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content("{\"id\":1,\"name\":\"Clothes\",\"price\":1000.0,\"quantity\":10}");
-////        System.out.println(request);
-//
-//        MvcResult result = mockMvc
-//                .perform(request)
-//                .andExpect(status().isCreated())
-////                .andExpect(content().json("{\"status\":true,\"message\":\"Product created successfully\",\"data\":{\"id\":1,\"name\":\"Clothes\",\"price\":1000.0,\"quantity\":10}}"))
-//                .andReturn();
-//        System.out.println("reesult "+ result.getResponse().getStatus());
+//    public static String asJsonString(final Object obj) {
+//        try {
+//            return new ObjectMapper().writeValueAsString(obj);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
 //    }
-
 
 }
