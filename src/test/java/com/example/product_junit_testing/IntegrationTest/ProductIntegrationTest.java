@@ -42,7 +42,8 @@ public class ProductIntegrationTest {
     @Test
     public void getById__success() throws Exception {
         String expected = "{\"status\":true,\"message\":\"\",\"data\":{\"id\":1,\"name\":\"NIkes\",\"price\":10000.0,\"quantity\":20}}";
-        ResponseEntity<String> response = this.testRestTemplate.getForEntity("/products/1",String.class);
+        ResponseEntity<String> response =this.testRestTemplate.withBasicAuth("spring","secret").getForEntity("/products/1", String.class);
+//                this.testRestTemplate.getForEntity("/products/1",String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(MediaType.APPLICATION_JSON, response.getHeaders().getContentType());
         JSONAssert.assertEquals(expected, response.getBody(), false);
