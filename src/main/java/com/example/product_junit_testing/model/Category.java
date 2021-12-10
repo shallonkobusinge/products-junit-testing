@@ -1,5 +1,7 @@
 package com.example.product_junit_testing.model;
 
+import com.example.product_junit_testing.dto.CategoryDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -19,7 +21,8 @@ public class Category {
         this.name = name;
     }
 
-    public Category() {
+    public Category(CategoryDto categoryDto) {
+        this.name = categoryDto.getName();
 
     }
 

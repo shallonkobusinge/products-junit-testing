@@ -1,11 +1,13 @@
 package com.example.product_junit_testing.utils;
 
+import com.example.product_junit_testing.model.Category;
 import com.example.product_junit_testing.model.Product;
 
 public class APIResponse {
     private boolean status;
     private String message;
     private Product data;
+    private Category category;
 
     public APIResponse(boolean status, String message, Product data) {
         this.status = status;
@@ -16,6 +18,12 @@ public class APIResponse {
     public APIResponse(boolean status, String message) {
         this.status = status;
         this.message = message;
+    }
+
+    public APIResponse(boolean status, String message, Category category) {
+        this.status = status;
+        this.message = message;
+        this.category = category;
     }
 
     public boolean isStatus() {
@@ -38,7 +46,16 @@ public class APIResponse {
         return data;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public void setData(Product data) {
         this.data = data;
     }
+
 }
