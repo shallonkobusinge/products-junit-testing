@@ -2,6 +2,7 @@ package com.example.product_junit_testing.service;
 
 
 import com.example.product_junit_testing.dto.ProductDto;
+import com.example.product_junit_testing.model.Category;
 import com.example.product_junit_testing.model.Product;
 import com.example.product_junit_testing.repository.ProductRepository;
 import com.example.product_junit_testing.utils.APIResponse;
@@ -48,7 +49,11 @@ public class ProductService {
         Product savedProduct = productRepository.save(product);
       return ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse(true, "Product created successfully", savedProduct));
     }
-
+//    public ResponseEntity<APIResponse> createProductWithCategory(ProductDto productDto, Integer category){
+//        Category productCategory =
+//
+//
+//    }
     public ResponseEntity<APIResponse> update(Long id,ProductDto productDto ){
         Optional<Product> productFoundById = productRepository.findById(id);
         if(productFoundById.isPresent()){
@@ -74,4 +79,5 @@ public class ProductService {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIResponse(false, "Product not found"));
     }
+
 }

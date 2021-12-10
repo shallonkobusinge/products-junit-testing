@@ -5,6 +5,7 @@ import com.example.product_junit_testing.model.Product;
 import com.example.product_junit_testing.service.ProductService;
 import com.example.product_junit_testing.utils.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/products")
