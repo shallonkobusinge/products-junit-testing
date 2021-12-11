@@ -4,6 +4,7 @@ package com.example.product_junit_testing.service;
 import com.example.product_junit_testing.dto.ProductDto;
 import com.example.product_junit_testing.model.Category;
 import com.example.product_junit_testing.model.Product;
+import com.example.product_junit_testing.repository.CategoryRepository;
 import com.example.product_junit_testing.repository.ProductRepository;
 import com.example.product_junit_testing.utils.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,10 @@ import java.util.Optional;
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
+
+    private CategoryService categoryService;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     public List<Product> getAll(){
 
@@ -49,11 +54,20 @@ public class ProductService {
         Product savedProduct = productRepository.save(product);
       return ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse(true, "Product created successfully", savedProduct));
     }
-//    public ResponseEntity<APIResponse> createProductWithCategory(ProductDto productDto, Integer category){
-//        Category productCategory =
-//
-//
-//    }
+    public ResponseEntity<APIResponse> createProductWithCategory(ProductDto productDto, Integer category){
+        Optional<Category> productCategory = categoryRepository.findById(category);
+        if(productCategory.isPresent()){
+
+            productDto.setCategory(productCategory.get());
+            Product product = new Product(productDto);
+            Product savedProduct = productRepository.save(product);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse(true,"Product created successfully", savedProduct));
+
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIResponse(false,"Category not found"));
+
+
+    }
     public ResponseEntity<APIResponse> update(Long id,ProductDto productDto ){
         Optional<Product> productFoundById = productRepository.findById(id);
         if(productFoundById.isPresent()){
