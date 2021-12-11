@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,6 +34,10 @@ public class ProductController {
     @PostMapping()
     public ResponseEntity<?> create(@RequestBody @Valid ProductDto productDto){
         return productService.create(productDto);
+    }
+    @PostMapping("/with-category")
+    public ResponseEntity<?> createWithCategory(@RequestBody @Valid ProductDto productDto, Integer category){
+        return productService.createProductWithCategory(productDto, category);
     }
 
     @PutMapping("/{id}")
