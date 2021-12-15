@@ -1,11 +1,6 @@
 package com.example.product_junit_testing.dto;
 
-import com.example.product_junit_testing.model.Category;
 import com.sun.istack.NotNull;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 public class ProductDto {
     @NotNull
@@ -14,23 +9,6 @@ public class ProductDto {
     private Double price;
     @NotNull
     private Integer quantity;
-
-    private Category category;
-
-    public ProductDto(String name, Double price, Integer quantity, Category category) {
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.category = category;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
 
     public ProductDto() {
     }

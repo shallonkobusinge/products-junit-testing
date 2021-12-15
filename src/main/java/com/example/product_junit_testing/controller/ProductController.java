@@ -35,10 +35,6 @@ public class ProductController {
     public ResponseEntity<?> create(@RequestBody @Valid ProductDto productDto){
         return productService.create(productDto);
     }
-    @PostMapping("/with-category")
-    public ResponseEntity<?> createWithCategory(@RequestBody @Valid ProductDto productDto, Integer category){
-        return productService.createProductWithCategory(productDto, category);
-    }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable(name = "id") Long id, @RequestBody @Valid ProductDto productDto){

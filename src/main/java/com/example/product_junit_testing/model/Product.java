@@ -23,25 +23,6 @@ public class Product {
     @NotNull
     private Integer quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "category")
-    private Category category;
-
-    public Product(Long id, String name, Double price, Integer quantity, Category category) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.category = category;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
 
     public Product(Long id, String name, Double price, Integer quantity) {
         this.id = id;
